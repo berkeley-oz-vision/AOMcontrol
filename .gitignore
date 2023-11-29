@@ -2,5 +2,6 @@ color_naming_offsets
 tempStimulus
 BMP_files/*
 *.mat
+*.asv
 *~
 D:/*
