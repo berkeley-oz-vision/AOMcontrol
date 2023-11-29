@@ -20,6 +20,7 @@ function [x1,x2,y1,y2,Error]=TrackPupilV2017_Retro_Double_9(A,Graphic)
 % TrackPupilV2017_Retro_Double_7 - bug introduced above 
 % TrackPupilV2017_Retro_Double_8 - improved tracking in case of poor IR
 % TrackPupilV2017_Retro_Double_9 - reduce complexity for edge detection
+
 Error=0;
 x1=-1; x2=-1; y1=-1; y2=-1;
 VALUE_PLUS_MIN=30;
@@ -31,11 +32,27 @@ if Graphic==1,figure(30); image(A./2); colormap(gray); axis image; hold on; end
 
 s=size(A);
 
-[MaxGrad,IndexMin]=max(A(:)); MinValueUp=MaxGrad-VALUE_PLUS_MIN;            % look for min
-IndexPupil=find(A(:)>MinValueUp);  [y,x] = ind2sub(s,IndexPupil);           % look for everyhting below min
-x0=round(median(x)); y0=round(median(y));
+[MaxGrad,IndexMin]=max(A(:));
+MinValueUp=MaxGrad-VALUE_PLUS_MIN;            % look for min
+IndexPupil=find(A(:)>MinValueUp);  
+[y,x,~] = ind2sub(s,IndexPupil);           % look for everyhting below min
+x0=round(median(x));
+y0=round(median(y));
+
+% rect_width = 30;
+% rect_height = 50;
+% x1 = x0 - rect_width/2;
+% x2 = x0 + rect_width/2;
+% y1 = y0 - rect_height/2;
+% y2 = y0 + rect_height/2;
+% 
+% return;
+
 if MaxGrad < MIN_WHITE_ACCEPT_FOR_PUPIL, Error=-1; return; end
 
+% R = 20;
+% x1=0-R; x2=0+R; y1=0-R; y2=0+R;
+% return;
         
 %*************** look for edge going outwards in the 360 directions
 NUM_OF_FSS_POINTS=360;  % defining the no. of radii for flying spot alg
